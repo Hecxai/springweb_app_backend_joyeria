@@ -1,9 +1,10 @@
 package com.hecxai.springweb.backend.springweb_app_backend_joyeria.models;
 
 import jakarta.persistence.*;
+import java.util.*;
 
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +16,11 @@ public class Role {
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
+    // orphanRemoval = significa que las entidades secundarias se eliminarán si se
+    // eliminan de la colección en la entidad principal.
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<UserRole> userRoles;
 
     public Role() {
     }
@@ -41,6 +47,14 @@ public class Role {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
 }

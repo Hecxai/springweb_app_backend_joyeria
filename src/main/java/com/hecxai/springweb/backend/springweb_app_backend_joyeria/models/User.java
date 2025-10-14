@@ -1,12 +1,11 @@
 package com.hecxai.springweb.backend.springweb_app_backend_joyeria.models;
 
-import java.security.Timestamp;
-import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.*;
 import java.util.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +13,7 @@ public class User {
     private Long userId;
 
     @Column(name = "full_name", length = 150, nullable = false)
-    private String full_name;
+    private String fullName;
 
     @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
@@ -25,12 +24,11 @@ public class User {
     @Column(name = "active")
     private boolean active = true;
 
-    @CreationTimestamp
     @Column(name = "creation_date", updatable = false)
-    private Timestamp creationDate;
+    private LocalDateTime creationDate = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<UserRole> userRoles = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<UserRole> userRoles;
 
     public User() {
     }
@@ -43,12 +41,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setFullName(String full_name) {
+        this.fullName = full_name;
     }
 
     public String getEmail() {
@@ -75,11 +73,11 @@ public class User {
         this.active = active;
     }
 
-    public Timestamp getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Timestamp creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
